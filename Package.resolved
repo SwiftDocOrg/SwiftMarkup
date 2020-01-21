@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CommonMark",
+        "repositoryURL": "https://github.com/SwiftDocOrg/CommonMark.git",
+        "state": {
+          "branch": "master",
+          "revision": "99d04570e68dddd30b1a900a2f1988107d1001b0",
+          "version": null
+        }
+      },
+      {
+        "package": "cmark",
+        "repositoryURL": "https://github.com/apple/swift-cmark.git",
+        "state": {
+          "branch": "master",
+          "revision": "2a766030bee955b4806044fd7aca1b6884475138",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
