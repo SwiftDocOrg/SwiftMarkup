@@ -5,18 +5,18 @@
         "package": "CommonMark",
         "repositoryURL": "https://github.com/SwiftDocOrg/CommonMark.git",
         "state": {
-          "branch": "master",
-          "revision": "99d04570e68dddd30b1a900a2f1988107d1001b0",
-          "version": null
+          "branch": null,
+          "revision": "2f5a2a42c804bdfcc3791d6ca75874b121bd91c3",
+          "version": "0.1.2"
         }
       },
       {
         "package": "cmark",
-        "repositoryURL": "https://github.com/apple/swift-cmark.git",
+        "repositoryURL": "https://github.com/SwiftDocOrg/swift-cmark.git",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "2a766030bee955b4806044fd7aca1b6884475138",
-          "version": null
+          "version": "0.28.3+20200110.2a76603"
         }
       }
     ]

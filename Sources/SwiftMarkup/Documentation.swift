@@ -250,7 +250,7 @@ extension Documentation {
         }
 
         private func visitBulletList(_ node: BulletList) {
-            for item in node.items {
+            for item in node.children {
                 visitBulletListItem(item)
             }
 
