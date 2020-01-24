@@ -224,32 +224,30 @@ extension Documentation {
 
         func visitDocument(_ node: Document) {
             assert(state == .initial)
-            guard let firstChild = node.children.first,
-                firstChild is Block
-                else {
-                    return
+            guard let firstChild = node.children.first else {
+                return
             }
 
             state = firstChild is Paragraph ? .summary : .discussion
 
-            for case let child as Block in node.children {
+            for case let child in node.children {
                 visitBlock(child)
             }
         }
 
-        private func visitBlock(_ node: Block) {
+        private func visitBlock(_ node: Node & Block) {
             switch (state, node) {
             case (.summary, _):
                 documentation.summary = node.description.trimmingCharacters(in: .whitespacesAndNewlines)
                 state = .discussion
-            case (.discussion, let list as BulletList):
+            case (.discussion, let list as List) where list.kind == .bullet:
                 visitBulletList(list)
             default:
                 documentation.discussionParts += [node.description]
             }
         }
 
-        private func visitBulletList(_ node: BulletList) {
+        private func visitBulletList(_ node: List) {
             for item in node.children {
                 visitBulletListItem(item)
             }
@@ -257,7 +255,7 @@ extension Documentation {
             state = .discussion
         }
 
-        private func visitBulletListItem(_ node: ListItem) {
+        private func visitBulletListItem(_ node: List.Item) {
             let string = node.description
             let pattern = #"\s*[\-\+\*]\s*(?<name>[\w\h]+):(\s*(?<description>.+))?"#
             let regularExpression = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators])
@@ -289,7 +287,7 @@ extension Documentation {
             case .discussion:
                 if name.caseInsensitiveCompare("parameters") == .orderedSame {
                     state = .parameters
-                    for case let nestedBulletList as BulletList in node.children {
+                    for case let nestedBulletList as List in node.children where nestedBulletList.kind == .bullet {
                         visitBulletList(nestedBulletList)
                     }
                 } else if name.caseInsensitiveCompare("parameter") == .orderedSame {
