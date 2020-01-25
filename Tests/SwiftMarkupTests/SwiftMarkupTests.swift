@@ -32,6 +32,8 @@ final class SwiftMarkupTests: XCTestCase {
     func testSwiftMarkupParsing() throws {
         let documentation = try Documentation.parse(markdown)
 
+        XCTAssertEqual(documentation.isEmpty, false)
+
         XCTAssertEqual(documentation.summary, "Creates a new bicycle with the provided parts and specifications.")
         XCTAssertEqual(documentation.discussionParts.count, 4)
 

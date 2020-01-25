@@ -25,6 +25,15 @@ public struct Documentation {
     /// The documented error throwing behavior.
     public var `throws`: String?
 
+    /// Whether the documentation has any content.
+    public var isEmpty: Bool {
+        return summary == nil &&
+                `throws` == nil &&
+                returns == nil &&
+                discussionParts.isEmpty &&
+                parameters.isEmpty
+    }
+
     /**
      Create and return documentation from Swift Markup text.
 
