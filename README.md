@@ -64,7 +64,7 @@ let package = Package(
   dependencies: [
     .package(
         url: "https://github.com/SwiftDocOrg/SwiftMarkup",
-        from: "0.0.3"
+        from: "0.0.4"
     ),
   ]
 )
