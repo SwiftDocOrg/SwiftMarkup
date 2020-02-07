@@ -1,6 +1,7 @@
 # SwiftMarkup
 
 ![CI][ci badge]
+[![Documentation][documentation badge]][documentation]
 
 SwiftMarkup parses [Swift Markup][swift markup] from documentation comments
 into structured documentation entities.
@@ -88,3 +89,5 @@ Mattt ([@mattt](https://twitter.com/mattt))
 [swift markup]: https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/MarkupSyntax.html#//apple_ref/doc/uid/TP40016497-CH105-SW1
 
 [ci badge]: https://github.com/SwiftDocOrg/SwiftSemantics/workflows/CI/badge.svg
+[documentation badge]: https://github.com/SwiftDocOrg/SwiftSemantics/workflows/Documentation/badge.svg
+[documentation]: https://github.com/SwiftDocOrg/SwiftSemantics/wiki
