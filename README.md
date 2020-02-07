@@ -88,6 +88,6 @@ Mattt ([@mattt](https://twitter.com/mattt))
 [swiftsemantics]: https://github.com/SwiftDocOrg/SwiftSemantics
 [swift markup]: https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/MarkupSyntax.html#//apple_ref/doc/uid/TP40016497-CH105-SW1
 
-[ci badge]: https://github.com/SwiftDocOrg/SwiftSemantics/workflows/CI/badge.svg
-[documentation badge]: https://github.com/SwiftDocOrg/SwiftSemantics/workflows/Documentation/badge.svg
-[documentation]: https://github.com/SwiftDocOrg/SwiftSemantics/wiki
+[ci badge]: https://github.com/SwiftDocOrg/SwiftMarkup/workflows/CI/badge.svg
+[documentation badge]: https://github.com/SwiftDocOrg/SwiftMarkup/workflows/Documentation/badge.svg
+[documentation]: https://github.com/SwiftDocOrg/SwiftMarkup/wiki
