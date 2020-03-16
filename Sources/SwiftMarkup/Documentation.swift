@@ -266,14 +266,15 @@ extension Documentation {
 
         private func visitBulletListItem(_ node: List.Item) {
             let string = node.description
-            let pattern = #"\s*[\-\+\*]\s*(?<name>[\w\h]+):(\s*(?<description>.+))?"#
-            let regularExpression = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators])
+            let pattern = #"\s*[\-\+\*]\s*(?<parameter>(?:Parameter\s+)?)(?<name>[\w\h]+):(\s*(?<description>.+))?"#
+            let regularExpression = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators, .caseInsensitive])
 
             guard let match = regularExpression.firstMatch(in: string, options: [], range: NSRange(string.startIndex ..< string.endIndex, in: string)),
-                let nameRange = Range(match.range(at: 1), in: string),
-                let descriptionRange = Range(match.range(at: 2), in: string)
-                else {
-                    return
+                let parameterRange = Range(match.range(at: 1), in: string),
+                let nameRange = Range(match.range(at: 2), in: string),
+                let descriptionRange = Range(match.range(at: 3), in: string)
+            else {
+                return
             }
 
             func normalize<S: StringProtocol>(_ string: S) -> String {
@@ -291,7 +292,8 @@ extension Documentation {
             }
 
             switch state {
-            case .parameters:
+            case .parameters,
+                 _ where !parameterRange.isEmpty:
                 documentation.parameters += [(name, description)]
             case .discussion:
                 if name.caseInsensitiveCompare("parameters") == .orderedSame {

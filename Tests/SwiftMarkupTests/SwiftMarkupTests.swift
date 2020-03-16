@@ -16,8 +16,8 @@ although the words were used with some degree of overlap for a time.
 
 - Author: Mattt
 - Complexity: `O(1)`
+- Parameter style: The style of the bicycle
 - Parameters:
-   - style: The style of the bicycle
    - gearing: The gearing of the bicycle
    - handlebar: The handlebar of the bicycle
    - frameSize: The frame size of the bicycle, in centimeters
