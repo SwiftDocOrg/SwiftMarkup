@@ -80,9 +80,4 @@ final class SwiftMarkupTests: XCTestCase {
 
         XCTAssertEqual(original, decoded)
     }
-
-    static var allTests = [
-        ("testSwiftMarkupParsing", testSwiftMarkupParsing),
-        ("testEncodingAndDecoding", testEncodingAndDecoding)
-    ]
 }
