@@ -12,7 +12,7 @@ public struct Documentation {
     public var discussionParts: [DiscussionPart] = []
 
     /// The documented parameters.
-    public var parameters: [(name: String, description: String)] = []
+    public var parameters: [Parameter] = []
 
     /// The documented return value.
     public var returns: String?
@@ -258,7 +258,8 @@ extension Documentation {
             switch state {
             case .parameters,
                  _ where !parameterRange.isEmpty:
-                documentation.parameters += [(name, description)]
+                let parameter = Parameter(name: name, description: description)
+                documentation.parameters += [parameter]
             case .discussion:
                 if name.caseInsensitiveCompare("parameters") == .orderedSame {
                     state = .parameters
