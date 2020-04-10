@@ -1,5 +1,5 @@
 public struct Callout: Hashable, Codable {
-    public enum Delimiter: String, CaseIterable, Hashable, Codable {
+    public enum Delimiter: String, Hashable, CaseIterable, Codable {
         case precondition
         case postcondition
         case requires
