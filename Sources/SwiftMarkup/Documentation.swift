@@ -1,11 +1,6 @@
 import CommonMark
 import Foundation
 
-/// A part of the discussion (either text or a callout).
-public protocol DiscussionPart {}
-extension String: DiscussionPart {}
-extension Documentation.Callout: DiscussionPart {}
-
 // MARK: -
 
 /// Documentation for a Swift declaration.
