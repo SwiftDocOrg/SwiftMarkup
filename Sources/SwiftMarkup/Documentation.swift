@@ -1,10 +1,10 @@
-import CommonMark
 import Foundation
+import CommonMark
 
 // MARK: -
 
 /// Documentation for a Swift declaration.
-public struct Documentation {
+public struct Documentation: Equatable, Codable {
     /// The summary.
     public var summary: String?
 
@@ -48,138 +48,6 @@ public struct Documentation {
     }
 }
 
-// MARK: Equatable
-
-extension Documentation: Equatable {
-    public static func == (lhs: Documentation, rhs: Documentation) -> Bool {
-        guard lhs.summary == rhs.summary,
-            lhs.returns == rhs.returns,
-            lhs.parameters.count == rhs.parameters.count
-            else {
-                return false
-        }
-
-        for (lp, rp) in zip(lhs.discussionParts, rhs.discussionParts) {
-            switch (lp, rp) {
-            case let (lp, rp) as (String, String):
-                guard lp == rp else { return false }
-            case let (lp, rp) as (Callout, Callout):
-                guard lp == rp else { return false }
-            default:
-                return false
-            }
-        }
-
-        for (lp, rp) in zip(lhs.parameters, rhs.parameters) {
-            guard lp.name == rp.name, lp.description == rp.description else { return false }
-        }
-
-        return true
-    }
-}
-
-// MARK: Hashable
-
-extension Documentation: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(summary)
-        hasher.combine(discussionParts.map { String(describing: $0) })
-        for case let (name, description) in parameters {
-            hasher.combine(name)
-            hasher.combine(description)
-        }
-        hasher.combine(returns)
-        hasher.combine(`throws`)
-    }
-}
-
-// MARK: Codable
-
-extension Documentation: Codable {
-    private enum CodingKeys: String, CodingKey {
-        case summary
-        case discussionParts
-        case parameters
-        case returns
-        case `throws`
-    }
-
-    private enum ParameterCodingKeys: String, CodingKey {
-        case name
-        case description
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.summary = try container.decode(String.self, forKey: .summary)
-
-        do {
-            var discussionParts: [DiscussionPart] = []
-
-            var nestedUnkeyedContainer = try container.nestedUnkeyedContainer(forKey: .discussionParts)
-            while !nestedUnkeyedContainer.isAtEnd {
-                if let callout = try? nestedUnkeyedContainer.decode(Callout.self) {
-                    discussionParts.append(callout)
-                } else {
-                    let string = try nestedUnkeyedContainer.decode(String.self)
-                    discussionParts.append(string)
-                }
-            }
-
-            self.discussionParts = discussionParts
-        }
-
-        do {
-            var parameters: [(String, String)] = []
-
-            var nestedUnkeyedContainer = try container.nestedUnkeyedContainer(forKey: .parameters)
-            while !nestedUnkeyedContainer.isAtEnd {
-                let nestedKeyedContainer = try nestedUnkeyedContainer.nestedContainer(keyedBy: ParameterCodingKeys.self)
-                let name = try nestedKeyedContainer.decode(String.self, forKey: .name)
-                let description = try nestedKeyedContainer.decode(String.self, forKey: .description)
-                parameters.append((name, description))
-            }
-
-            self.parameters = parameters
-        }
-
-        self.returns = try container.decode(String.self, forKey: .returns)
-        self.throws = try container.decode(String.self, forKey: .throws)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(summary, forKey: .summary)
-
-        do {
-            for part in discussionParts {
-                var nestedContainer = container.nestedUnkeyedContainer(forKey: .discussionParts)
-                switch part {
-                case let callout as Callout:
-                    try nestedContainer.encode(callout)
-                case let string as String:
-                    try nestedContainer.encode(string)
-                default:
-                    let context = EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "invalid part")
-                    throw EncodingError.invalidValue(part, context)
-                }
-            }
-        }
-
-        do {
-            var nestedUnkeyedContainer = container.nestedUnkeyedContainer(forKey: .parameters)
-            for case let (name, description) in parameters {
-                var nestedKeyedContainer = nestedUnkeyedContainer.nestedContainer(keyedBy: ParameterCodingKeys.self)
-                try nestedKeyedContainer.encode(name, forKey: .name)
-                try nestedKeyedContainer.encode(description, forKey: .description)
-            }
-        }
-
-        try container.encode(returns, forKey: .returns)
-        try container.encode(`throws`, forKey: .throws)
-    }
-}
-
 // MARK: -
 
 extension Documentation {
@@ -216,7 +84,9 @@ extension Documentation {
             case (.discussion, let list as List) where list.kind == .bullet:
                 visitBulletList(list)
             default:
-                documentation.discussionParts += [node.description]
+                if let part = DiscussionPart(node) {
+                    documentation.discussionParts += [part]
+                }
             }
         }
 
@@ -267,15 +137,17 @@ extension Documentation {
                         visitBulletList(nestedBulletList)
                     }
                 } else if name.caseInsensitiveCompare("parameter") == .orderedSame {
-                    documentation.parameters += [(name, description)]
+                    let parameter = Parameter(name: name, description: description)
+                    documentation.parameters += [parameter]
                 } else if name.caseInsensitiveCompare("returns") == .orderedSame {
                     documentation.returns = description
                 } else if name.caseInsensitiveCompare("throws") == .orderedSame {
                     documentation.throws = description
                 } else if let delimiter = Callout.Delimiter(rawValue: name.lowercased()) {
-                    documentation.discussionParts += [Callout(delimiter: delimiter, content: description)]
-                } else {
-                    documentation.discussionParts += [node.description]
+                    let callout = Callout(delimiter: delimiter, content: description)
+                    documentation.discussionParts += [.callout(callout)]
+                } else if let part = DiscussionPart(node) {
+                    documentation.discussionParts += [part]
                 }
             default:
                 assertionFailure("unexpected state: \(state)")

@@ -1,4 +1,5 @@
 @testable import SwiftMarkup
+import CommonMark
 import XCTest
 
 let markdown = #"""
@@ -13,6 +14,10 @@ The word was first used in 1847 in a French publication to describe
 an unidentified two-wheeled vehicle, possibly a carriage.
 The design of the bicycle was an advance on the velocipede,
 although the words were used with some degree of overlap for a time.
+
+```swift
+let bicycle = Bicycle(gearing: .fixed, handlebar: .drop, frameSize: 170)
+```
 
 - Author: Mattt
 - Complexity: `O(1)`
@@ -35,29 +40,36 @@ final class SwiftMarkupTests: XCTestCase {
         XCTAssertEqual(documentation.isEmpty, false)
 
         XCTAssertEqual(documentation.summary, "Creates a new bicycle with the provided parts and specifications.")
-        XCTAssertEqual(documentation.discussionParts.count, 4)
+        XCTAssertEqual(documentation.discussionParts.count, 5)
 
-        let remark = documentation.discussionParts[0] as! Callout
+        guard case .callout(let remark) = documentation.discussionParts[0] else { fatalError() }
+        XCTAssertEqual(remark.delimiter, .remark)
         XCTAssertEqual(remark.content, "Satisfaction guaranteed\\!")
 
-        let discussion = documentation.discussionParts[1] as! String
-        XCTAssert(discussion.starts(with: "The word *bicycle*"))
+        guard case .paragraph(let paragraph) = documentation.discussionParts[1] else { fatalError() }
+        XCTAssert(paragraph.description.starts(with: "The word *bicycle*"))
 
-        let author = documentation.discussionParts[2] as! Callout
+        guard case .codeBlock(let example) = documentation.discussionParts[2] else { fatalError() }
+        XCTAssertEqual(example.fenceInfo, "swift")
+        XCTAssertEqual(example.literal, "let bicycle = Bicycle(gearing: .fixed, handlebar: .drop, frameSize: 170)\n")
+
+        guard case .callout(let author) = documentation.discussionParts[3] else { fatalError() }
+        XCTAssertEqual(author.delimiter, .author)
         XCTAssertEqual(author.content, "Mattt")
 
-        let complexity = documentation.discussionParts[3] as! Callout
+        guard case .callout(let complexity) = documentation.discussionParts[4] else { fatalError() }
+        XCTAssertEqual(complexity.delimiter, .complexity)
         XCTAssertEqual(complexity.content, "`O(1)`")
 
         XCTAssertEqual(documentation.parameters.count, 4)
         XCTAssertEqual(documentation.parameters[0].name, "style")
-        XCTAssertEqual(documentation.parameters[0].description,"The style of the bicycle")
+        XCTAssertEqual(documentation.parameters[0].content,"The style of the bicycle")
         XCTAssertEqual(documentation.parameters[1].name, "gearing")
-        XCTAssertEqual(documentation.parameters[1].description,"The gearing of the bicycle")
+        XCTAssertEqual(documentation.parameters[1].content,"The gearing of the bicycle")
         XCTAssertEqual(documentation.parameters[2].name, "handlebar")
-        XCTAssertEqual(documentation.parameters[2].description,"The handlebar of the bicycle")
+        XCTAssertEqual(documentation.parameters[2].content,"The handlebar of the bicycle")
         XCTAssertEqual(documentation.parameters[3].name, "frameSize")
-        XCTAssertEqual(documentation.parameters[3].description,"The frame size of the bicycle, in centimeters")
+        XCTAssertEqual(documentation.parameters[3].content,"The frame size of the bicycle, in centimeters")
 
         XCTAssertEqual(documentation.returns, "A beautiful, brand-new bicycle, custom-built just for you.")
 
@@ -78,6 +90,12 @@ final class SwiftMarkupTests: XCTestCase {
         let decoder = JSONDecoder()
         let decoded = try decoder.decode(Documentation.self, from: data)
 
-        XCTAssertEqual(original, decoded)
+        XCTAssertEqual(original.summary, decoded.summary)
+        for (expected, actual) in zip(original.discussionParts, decoded.discussionParts) {
+            XCTAssertEqual(actual, expected)
+        }
+        XCTAssertEqual(original.parameters, decoded.parameters)
+        XCTAssertEqual(original.throws, decoded.throws)
+        XCTAssertEqual(original.returns, decoded.returns)
     }
 }
