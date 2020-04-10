@@ -24,3 +24,11 @@ public struct Callout: Hashable, Codable {
     public var delimiter: Delimiter
     public var content: String
 }
+
+// MARK: - CustomStringConvertible
+
+extension Callout: CustomStringConvertible {
+    public var description: String {
+        return "- \(delimiter.rawValue.capitalized): \(content)"
+    }
+}
