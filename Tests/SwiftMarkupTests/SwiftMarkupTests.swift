@@ -37,16 +37,16 @@ final class SwiftMarkupTests: XCTestCase {
         XCTAssertEqual(documentation.summary, "Creates a new bicycle with the provided parts and specifications.")
         XCTAssertEqual(documentation.discussionParts.count, 4)
 
-        let remark = documentation.discussionParts[0] as! Documentation.Callout
+        let remark = documentation.discussionParts[0] as! Callout
         XCTAssertEqual(remark.content, "Satisfaction guaranteed\\!")
 
         let discussion = documentation.discussionParts[1] as! String
         XCTAssert(discussion.starts(with: "The word *bicycle*"))
 
-        let author = documentation.discussionParts[2] as! Documentation.Callout
+        let author = documentation.discussionParts[2] as! Callout
         XCTAssertEqual(author.content, "Mattt")
 
-        let complexity = documentation.discussionParts[3] as! Documentation.Callout
+        let complexity = documentation.discussionParts[3] as! Callout
         XCTAssertEqual(complexity.content, "`O(1)`")
 
         XCTAssertEqual(documentation.parameters.count, 4)
