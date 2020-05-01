@@ -4,7 +4,7 @@ import CommonMark
 // MARK: -
 
 /// Documentation for a Swift declaration.
-public struct Documentation: Equatable, Codable {
+public struct Documentation: Hashable, Codable {
     /// The summary.
     public var summary: String?
 
