@@ -45,7 +45,7 @@ final class SwiftMarkupTests: XCTestCase {
         XCTAssertEqual(documentation.isEmpty, false)
 
         XCTAssertEqual(documentation.summary, "Creates a new bicycle with the provided parts and specifications.")
-        XCTAssertEqual(documentation.discussionParts.count, 6)
+        XCTAssertEqual(documentation.discussionParts.count, 7)
 
         guard case .callout(let remark) = documentation.discussionParts[0] else { fatalError() }
         XCTAssertEqual(remark.delimiter, .remark)
@@ -54,19 +54,19 @@ final class SwiftMarkupTests: XCTestCase {
         guard case .paragraph(let paragraph) = documentation.discussionParts[1] else { fatalError() }
         XCTAssert(paragraph.description.starts(with: "The word *bicycle*"))
 
-        guard case .list(let list) = documentation.discussionParts[2] else { fatalError() }
+        guard case .list(let list) = documentation.discussionParts[3] else { fatalError() }
         XCTAssertEqual(list.children.count, 6)
-        XCTAssertEqual(list.children[0].description, "utility bicycles")
+        XCTAssertEqual(list.children[0].description.trimmingCharacters(in: .whitespacesAndNewlines), "- utility bicycles")
 
-        guard case .codeBlock(let example) = documentation.discussionParts[3] else { fatalError() }
+        guard case .codeBlock(let example) = documentation.discussionParts[4] else { fatalError() }
         XCTAssertEqual(example.fenceInfo, "swift")
         XCTAssertEqual(example.literal, "let bicycle = Bicycle(gearing: .fixed, handlebar: .drop, frameSize: 170)\n")
 
-        guard case .callout(let author) = documentation.discussionParts[3] else { fatalError() }
+        guard case .callout(let author) = documentation.discussionParts[5] else { fatalError() }
         XCTAssertEqual(author.delimiter, .author)
         XCTAssertEqual(author.content, "Mattt")
 
-        guard case .callout(let complexity) = documentation.discussionParts[4] else { fatalError() }
+        guard case .callout(let complexity) = documentation.discussionParts[6] else { fatalError() }
         XCTAssertEqual(complexity.delimiter, .complexity)
         XCTAssertEqual(complexity.content, "`O(1)`")
 
