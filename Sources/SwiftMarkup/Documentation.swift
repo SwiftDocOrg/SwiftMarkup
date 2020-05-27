@@ -99,6 +99,25 @@ extension Documentation {
         }
 
         private func visitBulletListItem(_ node: List.Item) {
+            func appendListItemToDiscussion(_ item: List.Item) {
+                var list: List
+                if case let .list(lastPart) = documentation.discussionParts.last {
+                    list = lastPart
+                    documentation.discussionParts.removeLast()
+                } else {
+                    list = List()
+                }
+
+                list.append(child: item)
+                documentation.discussionParts.append(.list(list))
+            }
+
+            func normalize<S: StringProtocol>(_ string: S) -> String {
+                return string.split { $0.isNewline }
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .joined(separator: " ")
+            }
+
             let string = node.description
             let pattern = #"\s*[\-\+\*]\s*(?<parameter>(?:Parameter\s+)?)(?<name>[\w\h]+):(\s*(?<description>.+))?"#
             let regularExpression = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators, .caseInsensitive])
@@ -108,13 +127,8 @@ extension Documentation {
                 let nameRange = Range(match.range(at: 2), in: string),
                 let descriptionRange = Range(match.range(at: 3), in: string)
             else {
+                appendListItemToDiscussion(node)
                 return
-            }
-
-            func normalize<S: StringProtocol>(_ string: S) -> String {
-                return string.split { $0.isNewline }
-                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                    .joined(separator: " ")
             }
 
             let name: String, description: String
@@ -146,11 +160,12 @@ extension Documentation {
                 } else if let delimiter = Callout.Delimiter(rawValue: name.lowercased()) {
                     let callout = Callout(delimiter: delimiter, content: description)
                     documentation.discussionParts += [.callout(callout)]
-                } else if let part = DiscussionPart(node) {
-                    documentation.discussionParts += [part]
+                } else {
+                    appendListItemToDiscussion(node)
                 }
             default:
                 assertionFailure("unexpected state: \(state)")
+                return
             }
         }
     }
