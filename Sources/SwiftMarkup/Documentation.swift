@@ -151,6 +151,7 @@ extension Documentation {
                 }
             default:
                 assertionFailure("unexpected state: \(state)")
+                return
             }
         }
     }
