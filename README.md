@@ -45,8 +45,8 @@ documentation.parameters[0].description // "The style of the bicycle"
 documentation.returns // A beautiful, brand-new bicycle, custom-built just for you.
 ```
 
-This package is used by [swift-doc][swiftdoc] 
-in coordination with [CommonMark][commonmark] and [SwiftSemantics][swiftsemantics] 
+This package is used by [swift-doc][swiftdoc]
+in coordination with [CommonMark][commonmark] and [SwiftSemantics][swiftsemantics]
 to generate documentation for Swift projects.
 
 ## Requirements
@@ -67,7 +67,7 @@ let package = Package(
   dependencies: [
     .package(
         url: "https://github.com/SwiftDocOrg/SwiftMarkup",
-        from: "0.1.0"
+        from: "0.2.1"
     ),
   ]
 )
@@ -87,7 +87,6 @@ Mattt ([@mattt](https://twitter.com/mattt))
 [commonmark]: https://github.com/SwiftDocOrg/CommonMark
 [swiftsemantics]: https://github.com/SwiftDocOrg/SwiftSemantics
 [swift markup]: https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/MarkupSyntax.html#//apple_ref/doc/uid/TP40016497-CH105-SW1
-
 [ci badge]: https://github.com/SwiftDocOrg/SwiftMarkup/workflows/CI/badge.svg
 [documentation badge]: https://github.com/SwiftDocOrg/SwiftMarkup/workflows/Documentation/badge.svg
 [documentation]: https://github.com/SwiftDocOrg/SwiftMarkup/wiki
