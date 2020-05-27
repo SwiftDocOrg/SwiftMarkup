@@ -10,10 +10,15 @@ Creates a new bicycle with the provided parts and specifications.
 The word *bicycle* first appeared in English print in 1868
 to describe "Bysicles and trysicles" on the
 "Champs Elysées and Bois de Boulogne".
-The word was first used in 1847 in a French publication to describe
-an unidentified two-wheeled vehicle, possibly a carriage.
-The design of the bicycle was an advance on the velocipede,
-although the words were used with some degree of overlap for a time.
+
+The more common types of bicycles include:
+
+- utility bicycles
+- mountain bicycles
+- racing bicycles
+- touring bicycles
+- hybrid bicycles
+- cruiser bicycles
 
 ```swift
 let bicycle = Bicycle(gearing: .fixed, handlebar: .drop, frameSize: 170)
@@ -40,7 +45,7 @@ final class SwiftMarkupTests: XCTestCase {
         XCTAssertEqual(documentation.isEmpty, false)
 
         XCTAssertEqual(documentation.summary, "Creates a new bicycle with the provided parts and specifications.")
-        XCTAssertEqual(documentation.discussionParts.count, 5)
+        XCTAssertEqual(documentation.discussionParts.count, 6)
 
         guard case .callout(let remark) = documentation.discussionParts[0] else { fatalError() }
         XCTAssertEqual(remark.delimiter, .remark)
@@ -49,7 +54,11 @@ final class SwiftMarkupTests: XCTestCase {
         guard case .paragraph(let paragraph) = documentation.discussionParts[1] else { fatalError() }
         XCTAssert(paragraph.description.starts(with: "The word *bicycle*"))
 
-        guard case .codeBlock(let example) = documentation.discussionParts[2] else { fatalError() }
+        guard case .list(let list) = documentation.discussionParts[2] else { fatalError() }
+        XCTAssertEqual(list.children.count, 6)
+        XCTAssertEqual(list.children[0].description, "utility bicycles")
+
+        guard case .codeBlock(let example) = documentation.discussionParts[3] else { fatalError() }
         XCTAssertEqual(example.fenceInfo, "swift")
         XCTAssertEqual(example.literal, "let bicycle = Bicycle(gearing: .fixed, handlebar: .drop, frameSize: 170)\n")
 
