@@ -49,7 +49,7 @@ final class SwiftMarkupTests: XCTestCase {
 
         guard case .callout(let remark) = documentation.discussionParts[0] else { fatalError() }
         XCTAssertEqual(remark.delimiter, .remark)
-        XCTAssertEqual(remark.content, "Satisfaction guaranteed\\!")
+        XCTAssertEqual(remark.content, #"Satisfaction guaranteed\!"#)
 
         guard case .paragraph(let paragraph) = documentation.discussionParts[1] else { fatalError() }
         XCTAssert(paragraph.description.starts(with: "The word *bicycle*"))
