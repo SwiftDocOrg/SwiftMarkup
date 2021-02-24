@@ -44,7 +44,7 @@ final class SwiftMarkupTests: XCTestCase {
 
         XCTAssertEqual(documentation.isEmpty, false)
 
-        XCTAssertEqual(documentation.summary, "Creates a new bicycle with the provided parts and specifications.")
+        XCTAssertEqual(documentation.summary?.description, "Creates a new bicycle with the provided parts and specifications.\n")
         XCTAssertEqual(documentation.discussionParts.count, 7)
 
         guard case .callout(let remark) = documentation.discussionParts[0] else { fatalError() }
@@ -80,9 +80,9 @@ final class SwiftMarkupTests: XCTestCase {
         XCTAssertEqual(documentation.parameters[3].name, "frameSize")
         XCTAssertEqual(documentation.parameters[3].content,"The frame size of the bicycle, in centimeters")
 
-        XCTAssertEqual(documentation.returns, "A beautiful, brand-new bicycle, custom-built just for you.")
+        XCTAssertEqual(documentation.returns?.description, "A beautiful, brand-new bicycle, custom-built just for you.\n")
 
-        XCTAssertEqual(documentation.throws,
+        XCTAssertEqual(documentation.throws?.description,
         #"""
           - `Error.invalidSpecification` if something's wrong with the design
           - `Error.partOutOfStock` if a part needs to be ordered
@@ -99,12 +99,12 @@ final class SwiftMarkupTests: XCTestCase {
         let decoder = JSONDecoder()
         let decoded = try decoder.decode(Documentation.self, from: data)
 
-        XCTAssertEqual(original.summary, decoded.summary)
+        XCTAssertEqual(original.summary?.description, decoded.summary?.description)
         for (expected, actual) in zip(original.discussionParts, decoded.discussionParts) {
             XCTAssertEqual(actual, expected)
         }
         XCTAssertEqual(original.parameters, decoded.parameters)
-        XCTAssertEqual(original.throws, decoded.throws)
-        XCTAssertEqual(original.returns, decoded.returns)
+        XCTAssertEqual(original.throws?.description, decoded.throws?.description)
+        XCTAssertEqual(original.returns?.description, decoded.returns?.description)
     }
 }
