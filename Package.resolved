@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SwiftDocOrg/CommonMark.git",
         "state": {
           "branch": null,
-          "revision": "62176a332884826997928ba578d9d322c16772fb",
-          "version": "0.4.0"
+          "revision": "1c8f3983c12b848e0d84b3a7a1d6f9a735e6661a",
+          "version": "0.5.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SwiftDocOrg/swift-cmark.git",
         "state": {
           "branch": null,
-          "revision": "2a766030bee955b4806044fd7aca1b6884475138",
-          "version": "0.28.3+20200110.2a76603"
+          "revision": "9c8096a23f44794bde297452d87c455fc4f76d42",
+          "version": "0.29.0+20210102.9c8096a"
         }
       }
     ]

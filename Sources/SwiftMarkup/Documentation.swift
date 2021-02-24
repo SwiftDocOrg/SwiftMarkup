@@ -71,7 +71,7 @@ extension Documentation {
 
             state = firstChild is Paragraph ? .summary : .discussion
 
-            for case let child in node.children {
+            for case let child in node.removeChildren() {
                 visitBlock(child)
             }
         }
