@@ -1,5 +1,4 @@
 @testable import SwiftMarkup
-import CommonMark
 import XCTest
 
 let markdown = #"""
