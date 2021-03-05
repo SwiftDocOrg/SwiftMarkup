@@ -8,6 +8,7 @@ public struct Callout: Hashable, Codable {
         case important = "Important"
         case warning = "Warning"
         case author = "Author"
+        case authors = "Authors"
         case copyright = "Copyright"
         case date = "Date"
         case seealso = "See Also"
