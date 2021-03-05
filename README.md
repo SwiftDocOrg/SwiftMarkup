@@ -29,20 +29,22 @@ to describe "Bysicles and trysicles" on the
 """#
 let documentation = try Documentation.parse(markdown)
 
-documentation.summary // "Creates a new bicycle with the provided parts and specifications."
+documentation.summary?.description // "Creates a new bicycle with the provided parts and specifications."
 
 documentation.discussionParts.count // 2
 
-let remark = documentation.discussionParts[0] as! Callout
-remark.content // "Satisfaction guaranteed\\!"
+if case .callout(let remark) = documentation.discussionParts[0] {
+    _ = remark.content // "Satisfaction guaranteed\\!"
+}
 
-let paragraph = documentation.discussionParts[1] as! String
-paragraph.content // "The word *bicycle* first appeared in English print in 1868 [ ... ]"
+if case .paragraph(let paragraph) = documentation.discussionParts[1] {
+    _ = paragraph.description // "The word *bicycle* first appeared in English print in 1868 [ ... ]"
+}
 
 documentation.parameters[0].name // "style"
-documentation.parameters[0].description // "The style of the bicycle"
+documentation.parameters[0]?.content.description // "The style of the bicycle"
 
-documentation.returns // A beautiful, brand-new bicycle, custom-built just for you.
+documentation.returns?.description // A beautiful, brand-new bicycle, custom-built just for you.
 ```
 
 This package is used by [swift-doc][swiftdoc]
