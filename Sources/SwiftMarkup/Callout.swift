@@ -24,14 +24,11 @@ public struct Callout: Hashable, Codable {
         init?(_ description: String) {
             let description = description.normalized
 
-            for delimiter in Delimiter.allCases {
-                if description == delimiter.rawValue.normalized {
-                    self = delimiter
-                    return
-                }
+            if let delimiter = Delimiter.allCases.first(where: { $0.rawValue.normalized == description }) {
+                self = delimiter
+            } else {
+                return nil
             }
-
-            return nil
         }
     }
 
