@@ -118,7 +118,7 @@ extension Documentation {
             }
 
             let string = node.description
-            let pattern = #"\s*[\-\+\*]\s*(?<parameter>(?:Parameter\s+)?)(?<name>[\w\h]+):(\s*(?<description>.+))?"#
+            let pattern = #"\s*[\-\+\*]\s*(?<parameter>(?:Parameter\s+)?)(?<name>[\w\h]+|Custom\(.+\)):(\s*(?<description>.+))?"#
             let regularExpression = try NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators, .caseInsensitive])
 
             guard let match = regularExpression.firstMatch(in: string, options: [], range: NSRange(string.startIndex ..< string.endIndex, in: string)),
@@ -156,7 +156,7 @@ extension Documentation {
                     documentation.returns = try Document(description)
                 } else if name.caseInsensitiveCompare("throws") == .orderedSame {
                     documentation.throws = try Document(description)
-                } else if let delimiter = Callout.Delimiter(name) {
+                } else if let delimiter = Callout.Delimiter(rawValue: name) {
                     let callout = Callout(delimiter: delimiter, content: description)
                     documentation.discussionParts += [.callout(callout)]
                 } else {

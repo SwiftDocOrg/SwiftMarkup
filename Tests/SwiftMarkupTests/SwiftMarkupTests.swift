@@ -27,6 +27,7 @@ let bicycle = Bicycle(gearing: .fixed, handlebar: .drop, frameSize: 170)
 
 - Author: Mattt
 - Complexity: `O(1)`
+- Custom(🚲): 🔥
 - Parameter style: The style of the bicycle
 - Parameters:
    - gearing: The gearing of the bicycle
@@ -46,7 +47,7 @@ final class SwiftMarkupTests: XCTestCase {
         XCTAssertEqual(documentation.isEmpty, false)
 
         XCTAssertEqual(documentation.summary?.description, "Creates a new bicycle with the provided parts and specifications.\n")
-        XCTAssertEqual(documentation.discussionParts.count, 8)
+        XCTAssertEqual(documentation.discussionParts.count, 9)
 
         guard case .callout(let remark) = documentation.discussionParts[0] else { return XCTFail() }
         XCTAssertEqual(remark.delimiter, .remark)
@@ -72,6 +73,13 @@ final class SwiftMarkupTests: XCTestCase {
         guard case .callout(let complexity) = documentation.discussionParts[7] else { return XCTFail() }
         XCTAssertEqual(complexity.delimiter, .complexity)
         XCTAssertEqual(complexity.content, "`O(1)`")
+
+        guard case .callout(let custom) = documentation.discussionParts[8],
+              case .custom(let delimiter) = custom.delimiter
+        else { return XCTFail() }
+
+        XCTAssertEqual(delimiter, "🚲")
+        XCTAssertEqual(custom.content, "🔥")
 
         XCTAssertEqual(documentation.parameters.count, 4)
         XCTAssertEqual(documentation.parameters[0].name, "style")
