@@ -236,7 +236,10 @@ public struct Callout: Hashable, Codable {
         case custom(String)
     }
 
+    /// The callout delimiter.
     public var delimiter: Delimiter
+
+    /// The content of the callout.
     public var content: String
 }
 
