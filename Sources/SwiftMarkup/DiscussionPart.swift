@@ -1,4 +1,4 @@
-import CommonMark
+@_exported import CommonMark
 
 /// A part of the discussion.
 public enum DiscussionPart {
