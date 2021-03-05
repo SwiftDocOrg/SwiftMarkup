@@ -2,6 +2,7 @@ import Foundation
 
 /// A documentation callout, such as a note, remark, or warning.
 public struct Callout: Hashable, Codable {
+    /// A label that marks the beginning of a callout.
     public enum Delimiter: Hashable {
         /**
          Highlighted information for the user of the symbol.
