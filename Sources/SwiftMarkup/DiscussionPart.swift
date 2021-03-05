@@ -1,14 +1,34 @@
 @_exported import CommonMark
 
-/// A part of the discussion.
+/**
+ A part of the discussion.
+
+ The `DiscussionPart` enumeration has cases for each type of block-level CommonMark node
+ as well as Swift Markup callouts.
+ */
 public enum DiscussionPart {
+    /// A block quote.
     case blockQuote(BlockQuote)
+
+    /// A callout, such as a note, remark, or warning.
     case callout(Callout)
+
+    /// A block of code.
     case codeBlock(CodeBlock)
+
+    /// A heading.
     case heading(Heading)
+
+    /// An HTML block.
     case htmlBlock(HTMLBlock)
+
+    /// A list.
     case list(List)
+
+    /// A paragraph.
     case paragraph(Paragraph)
+
+    /// A thematic break.
     case thematicBreak(ThematicBreak)
 
     init?(_ node: Node & Block) {
