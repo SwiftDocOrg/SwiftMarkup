@@ -147,7 +147,7 @@ extension Documentation {
                     documentation.returns = try Document(description)
                 } else if name.caseInsensitiveCompare("throws") == .orderedSame {
                     documentation.throws = try Document(description)
-                } else if let delimiter = Callout.Delimiter(rawValue: name.lowercased()) {
+                } else if let delimiter = Callout.Delimiter(name) {
                     let callout = Callout(delimiter: delimiter, content: description)
                     documentation.discussionParts += [.callout(callout)]
                 } else {
