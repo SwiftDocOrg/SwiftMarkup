@@ -132,7 +132,7 @@ extension Documentation {
             switch state {
             case .parameters,
                  _ where !parameterRange.isEmpty:
-                let parameter = Parameter(name: name, description: description)
+                let parameter = try Parameter(name: name, description: description)
                 documentation.parameters += [parameter]
             case .discussion:
                 if name.caseInsensitiveCompare("parameters") == .orderedSame {
@@ -141,7 +141,7 @@ extension Documentation {
                         try visitBulletList(nestedBulletList)
                     }
                 } else if name.caseInsensitiveCompare("parameter") == .orderedSame {
-                    let parameter = Parameter(name: name, description: description)
+                    let parameter = try Parameter(name: name, description: description)
                     documentation.parameters += [parameter]
                 } else if name.caseInsensitiveCompare("returns") == .orderedSame {
                     documentation.returns = try Document(description)

@@ -1,10 +1,12 @@
+@_exported import CommonMark
+
 public struct Parameter: Hashable, Codable {
     public let name: String
-    public let content: String
+    public let content: Document
 
-    init(name: String, description: String) {
+    init(name: String, description: String) throws {
         self.name = name
-        self.content = description
+        self.content = try Document(description)
     }
 }
 
