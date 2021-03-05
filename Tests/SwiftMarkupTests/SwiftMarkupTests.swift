@@ -71,13 +71,13 @@ final class SwiftMarkupTests: XCTestCase {
 
         XCTAssertEqual(documentation.parameters.count, 4)
         XCTAssertEqual(documentation.parameters[0].name, "style")
-        XCTAssertEqual(documentation.parameters[0].content,"The style of the bicycle")
+        XCTAssertEqual(documentation.parameters[0].content.description, "The style of the bicycle\n")
         XCTAssertEqual(documentation.parameters[1].name, "gearing")
-        XCTAssertEqual(documentation.parameters[1].content,"The gearing of the bicycle")
+        XCTAssertEqual(documentation.parameters[1].content.description, "The gearing of the bicycle\n")
         XCTAssertEqual(documentation.parameters[2].name, "handlebar")
-        XCTAssertEqual(documentation.parameters[2].content,"The handlebar of the bicycle")
+        XCTAssertEqual(documentation.parameters[2].content.description, "The handlebar of the bicycle\n")
         XCTAssertEqual(documentation.parameters[3].name, "frameSize")
-        XCTAssertEqual(documentation.parameters[3].content,"The frame size of the bicycle, in centimeters")
+        XCTAssertEqual(documentation.parameters[3].content.description, "The frame size of the bicycle, in centimeters\n")
 
         XCTAssertEqual(documentation.returns?.description, "A beautiful, brand-new bicycle, custom-built just for you.\n")
 
@@ -102,7 +102,7 @@ final class SwiftMarkupTests: XCTestCase {
         for (expected, actual) in zip(original.discussionParts, decoded.discussionParts) {
             XCTAssertEqual(actual, expected)
         }
-        XCTAssertEqual(original.parameters, decoded.parameters)
+        XCTAssertEqual(original.parameters.description, decoded.parameters.description)
         XCTAssertEqual(original.throws?.description, decoded.throws?.description)
         XCTAssertEqual(original.returns?.description, decoded.returns?.description)
     }
