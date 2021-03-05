@@ -9,6 +9,7 @@ public enum DiscussionPart {
     case htmlBlock(HTMLBlock)
     case list(List)
     case paragraph(Paragraph)
+    case thematicBreak(ThematicBreak)
 
     init?(_ node: Node & Block) {
         switch node {
@@ -24,6 +25,8 @@ public enum DiscussionPart {
             self = .list(list)
         case let paragraph as Paragraph:
             self = .paragraph(paragraph)
+        case let thematicBreak as ThematicBreak:
+            self = .thematicBreak(thematicBreak)
         default:
             return nil
         }
@@ -61,6 +64,8 @@ extension DiscussionPart: CustomStringConvertible {
             return list.description
         case .paragraph(let paragraph):
             return paragraph.description
+        case .thematicBreak(let thematicBreak):
+            return thematicBreak.description
         }
     }
 }
@@ -76,6 +81,7 @@ extension DiscussionPart: Codable {
         case htmlBlock
         case list
         case paragraph
+        case thematicBreak
     }
 
     public init(from decoder: Decoder) throws {
@@ -101,6 +107,9 @@ extension DiscussionPart: Codable {
         } else if container.contains(.paragraph) {
             let paragraph = try container.decode(Paragraph.self, forKey: .paragraph)
             self = .paragraph(paragraph)
+        } else if container.contains(.thematicBreak) {
+            let thematicBreak = try container.decode(ThematicBreak.self, forKey: .thematicBreak)
+            self = .thematicBreak(thematicBreak)
         } else {
             let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "invalid or missing key")
             throw DecodingError.dataCorrupted(context)
@@ -124,6 +133,8 @@ extension DiscussionPart: Codable {
             try container.encode(list, forKey: .list)
         case .paragraph(let paragraph):
             try container.encode(paragraph, forKey: .paragraph)
+        case .thematicBreak(let thematicBreak):
+            try container.encode(thematicBreak, forKey: .thematicBreak)
         }
     }
 }
