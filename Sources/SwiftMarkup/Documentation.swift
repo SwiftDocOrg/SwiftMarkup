@@ -18,13 +18,22 @@ public struct Documentation: Hashable, Codable {
     /// The documented error throwing behavior.
     public var `throws`: Document?
 
-    /// Whether the documentation has any content.
+    /**
+     Whether the documentation has any content.
+
+     Documentation is considered empty if all of the following criteria are met:
+     - Its `summary` property is `nil`
+     - Its `returns` property is `nil`
+     - Its `throws` property is `nil`
+     - Its `discussionParts` property is empty
+     - Its `parameters` property is empty
+     */
     public var isEmpty: Bool {
         return summary == nil &&
-                `throws` == nil &&
-                returns == nil &&
-                discussionParts.isEmpty &&
-                parameters.isEmpty
+            returns == nil &&
+            `throws` == nil &&
+            discussionParts.isEmpty &&
+            parameters.isEmpty
     }
 
     /**
