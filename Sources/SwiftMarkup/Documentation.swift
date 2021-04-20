@@ -39,7 +39,7 @@ public struct Documentation: Hashable, Codable {
     /**
      Create and return documentation from Swift Markup text.
 
-     - Parameters
+     - Parameters:
         - text: The documentation text in Swift Markup (CommonMark) format.
      - Throws:
         - `CommonMark.Document.Error`
