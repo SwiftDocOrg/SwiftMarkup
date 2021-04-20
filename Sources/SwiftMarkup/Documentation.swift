@@ -41,9 +41,7 @@ public struct Documentation: Hashable, Codable {
 
      - Parameters:
         - text: The documentation text in Swift Markup (CommonMark) format.
-     - Throws:
-        - `CommonMark.Document.Error`
-          if the provided text can't be parsed.
+     - Throws: `CommonMark.Document.Error` if the provided text can't be parsed.
      - Returns: A structured representation of the documentation.
      */
     public static func parse(_ text: String?) throws -> Documentation {
