@@ -20,7 +20,7 @@ jobs:
         with:
           inputs: "Sources"
           output: "Documentation"
-      - name: Upload Documentation to Wiki
+      - name: Upload Documentation to GitHub Wiki
         uses: SwiftDocOrg/github-wiki-publish-action@master
         with:
           path: "Documentation"
